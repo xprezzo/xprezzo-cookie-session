@@ -1,6 +1,6 @@
 /*!
  * cookie-session
- * Copyright(c) 2020 Ben Ajenoui <info@seohero.io>
+ * Copyright(c) 2022 Cloudgen Wong <cloudgen.wong@gmail.com>
  * MIT Licensed
  */
 
@@ -11,10 +11,10 @@
  * @private
  */
 
-var Buffer = require('xprezzo-buffer').Buffer
-var debug = require('xprezzo-debug')('xprezzo:cookie-session')
-var Cookies = require('cookies')
-var onHeaders = require('xprezzo-on-headers')
+const Buffer = require('xprezzo-buffer').Buffer
+const debug = require('xprezzo-debug')('xprezzo:cookie-session')
+const Cookies = require('cookies')
+const onHeaders = require('xprezzo-on-headers')
 
 /**
  * Module exports.
@@ -40,13 +40,13 @@ module.exports.ms = require('xprezzo-debug').ms
  */
 
 function cookieSession (options) {
-  var opts = options || {}
+  let opts = options || {}
 
   // cookie name
-  var name = opts.name || 'session'
+  let name = opts.name || 'session'
 
   // secrets
-  var keys = opts.keys
+  let keys = opts.keys
   if (!keys && opts.secret) keys = [opts.secret]
 
   // defaults
@@ -59,10 +59,10 @@ function cookieSession (options) {
   debug('session options %j', opts)
 
   return function _cookieSession (req, res, next) {
-    var cookies = new Cookies(req, res, {
+    let cookies = new Cookies(req, res, {
       keys: keys
     })
-    var sess
+    let sess
 
     // for overriding
     req.sessionOptions = Object.create(opts)
@@ -151,7 +151,7 @@ function Session (ctx, obj) {
   })
 
   if (obj) {
-    for (var key in obj) {
+    for (let key in obj) {
       this[key] = obj[key]
     }
   }
@@ -163,7 +163,7 @@ function Session (ctx, obj) {
  */
 
 Session.create = function create (obj) {
-  var ctx = new SessionContext()
+  let ctx = new SessionContext()
   return new Session(ctx, obj)
 }
 
@@ -173,8 +173,8 @@ Session.create = function create (obj) {
  */
 
 Session.deserialize = function deserialize (str) {
-  var ctx = new SessionContext()
-  var obj = decode(str)
+  let ctx = new SessionContext()
+  let obj = decode(str)
 
   ctx._new = false
   ctx._val = str
@@ -250,7 +250,7 @@ function SessionContext () {
  */
 
 function decode (string) {
-  var body = Buffer.from(string, 'base64').toString('utf8')
+  let body = Buffer.from(string, 'base64').toString('utf8')
   return JSON.parse(body)
 }
 
@@ -263,7 +263,7 @@ function decode (string) {
  */
 
 function encode (body) {
-  var str = JSON.stringify(body)
+  let str = JSON.stringify(body)
   return Buffer.from(str).toString('base64')
 }
 
@@ -273,7 +273,7 @@ function encode (body) {
  */
 
 function tryGetSession (cookies, name, opts) {
-  var str = cookies.get(name, opts)
+  let str = cookies.get(name, opts)
 
   if (!str) {
     return undefined
